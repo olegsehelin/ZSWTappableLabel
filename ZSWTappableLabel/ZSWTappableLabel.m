@@ -314,7 +314,11 @@ typedef NS_ENUM(NSInteger, ZSWTappableLabelNotifyType) {
     }
     
     self.hasCurrentEvent = NO;
-    [self removeHighlight];
+    [self performWithTouchHandling:^(ZSWTappableLabelTouchHandling *th) {
+        NSUInteger characterIdx = [th characterIndexAtPoint:[touches.anyObject locationInView:self]];
+        [self notifyForCharacterIndex:characterIdx type:ZSWTappableLabelNotifyTypeTap];
+        [self removeHighlight];
+    }];
 }
 
 - (void)applyHighlightAtIndex:(NSUInteger)characterIndex {
